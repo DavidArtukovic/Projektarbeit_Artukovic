@@ -1,8 +1,15 @@
 import pmdarima as pmd
 import numpy as np
+import pandas as pd
+from typing import Union
 
 
-def train_and_forecast_sarima(df, train_start, train_end, forecast_horizon=24):
+def train_and_forecast_sarima(
+    df: pd.DataFrame,
+    train_start: Union[str, pd.Timestamp],
+    train_end: Union[str, pd.Timestamp],
+    forecast_horizon: int = 24,
+) -> np.ndarray:
     """
     Trains a SARIMA model and returns a 24-hour forecast.
 
@@ -18,7 +25,6 @@ def train_and_forecast_sarima(df, train_start, train_end, forecast_horizon=24):
         The 24-hour forecast as array.
 
     """
-
     df_train = df.loc[train_start:train_end]
     model = pmd.auto_arima(
         df_train["nodal_demand"],

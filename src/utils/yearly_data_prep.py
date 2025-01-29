@@ -1,9 +1,11 @@
 import pandas as pd
 import numpy as np
 import os
+import matplotlib.pyplot as plt
+from typing import List
 
 
-def create_yearly_df():
+def create_yearly_df() -> pd.DataFrame:
     df = pd.read_csv(
         "../data/Wasserverbrauch.csv", delimiter=";", header=0, decimal=","
     )
@@ -16,7 +18,7 @@ def create_yearly_df():
             df = pd.merge(df, current_df, on="Jahr")
 
     # Sum the inhabitants in Stuttgart area
-    columns_to_sum = [
+    columns_to_sum: List[str] = [
         col
         for col in df.columns
         if col != "Wasserbereitstellung_Summe" and col != "Jahr"
@@ -41,21 +43,3 @@ def create_yearly_df():
     df = pd.merge(df, schnarrenberg_df, on="Jahr", how="left")
 
     return df
-
-
-if __name__ == "__main__":
-    raw_data = create_raw_data()
-    print("Head of the merged DataFrame:")
-    print(raw_data.head())
-
-    # Create a quick chart
-    plt.figure(figsize=(10, 6))
-    plt.scatter(
-        raw_data["Wasserbereitstellung_Summe"],
-        raw_data["Summe_Einwohner"],
-    )
-    plt.xlabel("Wasserverbrauch Summe")
-    plt.ylabel("Einwohner")
-    plt.title("Summe Einwohner vs Wasserbereitstellung Summe")
-    plt.legend()
-    plt.show()
