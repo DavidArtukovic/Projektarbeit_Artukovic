@@ -27,7 +27,7 @@ def train_and_forecast_sarima(
     """
     df_train = df.loc[train_start:train_end]
     model = pmd.auto_arima(
-        df_train["nodal_demand"],
+        df_train["smoothed_nodal_demand"],
         start_p=1,
         start_q=1,
         d=0,
