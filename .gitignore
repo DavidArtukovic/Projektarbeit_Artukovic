@@ -138,8 +138,12 @@ cython_debug/
 # Ignore everything in data/
 data/**
 
-# Unignore directories so we can then re-include specific files
+# Re-include the data/ folder and its subdirectories
+!data/
 !data/**/
 
+# Unignore directories so we can then re-include specific files
+!data/water_demand/prepared_water_demand_data.csv
+
 # Re-include only CSV files that contain 'prepared' in their filename
-!data/**prepared*.csv
+!data/weather_climate/prepared_weather_data.csv
