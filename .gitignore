@@ -133,3 +133,8 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+# datasets
+data/*
+!data/water_demand/*prepared*
+!data/weather_climate/*prepared*
