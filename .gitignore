@@ -147,3 +147,4 @@ data/**
 
 # Re-include only CSV files that contain 'prepared' in their filename
 !data/weather_climate/prepared_weather_data.csv
+!data/SVR_df.pkl
