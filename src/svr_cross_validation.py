@@ -121,6 +121,7 @@ def svr_cross_validation(
             rows.append(
                 {"ds": dt, "y": y_true_orig, "yhat": y_pred_orig, "cutoff": cutoff}
             )
+        print("Processed cutoff:", cutoff)
 
     # Build the resulting DataFrame
     df_cv_svr = pd.DataFrame(rows)
@@ -142,28 +143,23 @@ if __name__ == "__main__":
     # df = pd.read_parquet("wasserverbrauch_stuttgart.parquet", engine="pyarrow")
 
     # Specify which columns are exogenous features:
-    feature_cols = [
-        "temperature_Schnar",
-        "dry_soil_10",
-        "hour",
-        "is_weekend",
-        "sunshine_duration_Schnar",
-        "precipitation_Schnar",
-    ]
-    target_col = "nodal_demand"
+    SVR_df = pd.read_pickle("data/SVR_df.pkl")
 
+    target_col = "nodal_demand"
+    feature_cols = [col for col in SVR_df.columns if col != target_col]
     # ------------------------------------------------
     # 1) Expanding-Window CV (Prophet-Style: training grows)
     # ------------------------------------------------
     df_cv_expanding = svr_cross_validation(
-        df=df,
+        df=SVR_df,
         feature_cols=feature_cols,
         target_col=target_col,
         initial_days=1095,
         period_days=90,
         horizon_days=730,
     )
-    print("Expanding-Window CV (Prophet-Style):")
-    print(df_cv_expanding.head())
 
-    # After obtaining df_cv_expanding or df_cv_fixed, you can compute MAPE per horizon-day, plot results, etc.
+    pkl_path = "data/svr_cv.pkl"
+    df_cv_expanding.to_pickle(pkl_path)
+    print("Succefully finished export of Expanding-Window CV (Prophet-Style)")
+# After obtaining df_cv_expanding or df_cv_fixed, you can compute MAPE per horizon-day, plot results, etc.
